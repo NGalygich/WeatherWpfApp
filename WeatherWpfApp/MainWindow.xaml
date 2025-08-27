@@ -1,0 +1,29 @@
+﻿<Window x:Class="WeatherWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WeatherWpfApp"
+        xmlns:vm="clr-namespace:WeatherWpfApp.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+    <StackPanel Margin="20">
+        <TextBox Text="{Binding CityName, UpdateSourceTrigger=PropertyChanged}"
+                 Padding="5" FontSize="16" />
+        <Button Content="Получить погоду"
+                Command="{Binding SearchCommand}"
+                Margin="0, 10" Padding="10, 5" />
+
+        <StackPanel DataContext="{Binding CurrentWeather}" Margin="0, 20">
+            <TextBlock Text="{Binding CityName}" FontSize="20" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Main.Temperature, StringFormat={}{0}°C}" FontSize="48"/>
+            <TextBlock Text="{Binding Weather[0].Description}" FontSize="20"/>
+            <TextBlock Text="{Binding Main.Humidity, StringFormat={}Влажность: {0}%}"/>
+            <TextBlock Text="{Binding Wind.Speed, StringFormat={}Ветер: {0} м/с}"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
