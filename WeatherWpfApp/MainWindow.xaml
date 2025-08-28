@@ -3,27 +3,100 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:WeatherWpfApp"
         xmlns:vm="clr-namespace:WeatherWpfApp.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Клиент погоды: (OpenWeatherMap)" Height="450" Width="800" MinHeight="450" MinWidth="800">
 
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
-    <StackPanel Margin="20">
-        <TextBox Text="{Binding CityName, UpdateSourceTrigger=PropertyChanged}"
-                 Padding="5" FontSize="16" />
-        <Button Content="Получить погоду"
-                Command="{Binding SearchCommand}"
-                Margin="0, 10" Padding="10, 5" />
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40px"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel DataContext="{Binding CurrentWeather}" Margin="0, 20">
+        <TextBox x:Name="SearchTextBox"
+             Text="{Binding CityName, UpdateSourceTrigger=PropertyChanged}"
+             Grid.Row="0"
+             Grid.Column="3"
+             Grid.ColumnSpan="2"
+             Width="0"
+             Padding="5" 
+             FontSize="16"
+             VerticalAlignment="Center"
+             HorizontalAlignment="Right"
+             Visibility="Collapsed">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="0,0,5,0"/>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <Button x:Name="SearchButton"
+            Grid.Row="0"
+            Grid.Column="4"
+            Width="40"
+            Height="40"
+            Padding="8"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Right"
+            ToolTip="Получить погоду">
+
+            <Button.Content>
+                <Path Data="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                  Fill="White"
+                  Stretch="Uniform"/>
+            </Button.Content>
+
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#FF007ACC"/>
+                    <Setter Property="BorderBrush" Value="#FF007ACC"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF1C97EA"/>
+                            <Setter Property="BorderBrush" Value="#FF1C97EA"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#FF005599"/>
+                            <Setter Property="BorderBrush" Value="#FF005599"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseEnter">
+                    <i:ChangePropertyAction TargetName="SearchTextBox" PropertyName="Visibility" Value="Visible"/>
+                    <i:ChangePropertyAction TargetName="SearchTextBox" PropertyName="Width" Value="200"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="Click">
+                    <i:InvokeCommandAction Command="{Binding SearchCommand}"/>
+                    <i:ChangePropertyAction TargetName="SearchTextBox" PropertyName="Text" Value=""/>
+                    <i:ChangePropertyAction TargetName="SearchTextBox" PropertyName="Width" Value="0"/>
+                    <i:ChangePropertyAction TargetName="SearchTextBox" PropertyName="Visibility" Value="Collapsed"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
+
+        <StackPanel DataContext="{Binding CurrentWeather}" Margin="0, 20"  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
             <TextBlock Text="{Binding CityName}" FontSize="20" FontWeight="Bold"/>
             <TextBlock Text="{Binding Main.Temperature, StringFormat={}{0}°C}" FontSize="48"/>
             <TextBlock Text="{Binding Weather[0].Description}" FontSize="20"/>
             <TextBlock Text="{Binding Main.Humidity, StringFormat={}Влажность: {0}%}"/>
             <TextBlock Text="{Binding Wind.Speed, StringFormat={}Ветер: {0} м/с}"/>
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </Window>
