@@ -11,7 +11,7 @@ namespace WeatherWpfApp.Services
 {
     public class WeatherService
     {
-        private const string ApiKey = "0f3e3d9a05caf25bdd1b3ce2646b309f";
+        private const string ApiKey = "ключ api";
         private readonly HttpClient _httpClient;
 
         public WeatherService()
