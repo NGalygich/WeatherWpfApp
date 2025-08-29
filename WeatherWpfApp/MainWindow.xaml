@@ -9,10 +9,14 @@
         mc:Ignorable="d"
         Title="Клиент погоды: (OpenWeatherMap)" Height="450" Width="800" MinHeight="450" MinWidth="800">
 
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
-    <Grid ShowGridLines="True">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40px"/>
             <RowDefinition Height="*"/>
@@ -98,5 +102,12 @@
             <TextBlock Text="{Binding Main.Humidity, StringFormat={}Влажность: {0}%}"/>
             <TextBlock Text="{Binding Wind.Speed, StringFormat={}Ветер: {0} м/с}"/>
         </StackPanel>
+
+        <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.RowSpan="3" Grid.ColumnSpan="5">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar IsIndeterminate="True" Width="100" Height="20"/>
+                <TextBlock Text="Определение местоположения..." Foreground="White" Margin="0,10,0,0"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
