@@ -35,6 +35,9 @@ namespace WeatherWpfApp.Models
 
     public class WeatherInfo
     {
+        [JsonProperty("id")]
+        public int Id { get; set; }
+
         [JsonProperty("main")]
         public string Main { get; set; } 
 
@@ -42,7 +45,10 @@ namespace WeatherWpfApp.Models
         public string Description { get; set; } 
 
         [JsonProperty("icon")]
-        public string Icon { get; set; } 
+        public string Icon { get; set; }
+
+        [JsonProperty("icon_url")]
+        public string IconUrl => $"https://openweathermap.org/img/wn/{Icon}@2x.png";
     }
 
     public class WindData
