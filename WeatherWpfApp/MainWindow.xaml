@@ -30,9 +30,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Canvas Grid.Row="0" Grid.ColumnSpan="5" Background="DarkBlue">
-
-        </Canvas>
+        <Canvas Grid.Row="0" Grid.ColumnSpan="5" Background="DarkBlue"/>
 
         <TextBox x:Name="SearchTextBox"
              Text="{Binding CityName, UpdateSourceTrigger=PropertyChanged}"
