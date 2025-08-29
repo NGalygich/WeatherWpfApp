@@ -56,4 +56,40 @@ namespace WeatherWpfApp.Models
         [JsonProperty("speed")]
         public double Speed { get; set; }
     }
+
+    public class ForecastResponse
+    {
+        [JsonProperty("list")]
+        public List<ForecastItem> Items { get; set; }
+
+        [JsonProperty("city")]
+        public CityInfo City { get; set; }
+    }
+
+    public class ForecastItem
+    {
+        [JsonProperty("dt")]
+        public long Timestamp { get; set; }
+
+        [JsonProperty("main")]
+        public MainData Main { get; set; }
+
+        [JsonProperty("weather")]
+        public List<WeatherInfo> Weather { get; set; }
+
+        [JsonProperty("wind")]
+        public WindData Wind { get; set; }
+
+        [JsonProperty("dt_txt")]
+        public string DateTimeText { get; set; }
+    }
+
+    public class CityInfo
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("country")]
+        public string Country { get; set; }
+    }
 }

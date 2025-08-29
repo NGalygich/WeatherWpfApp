@@ -11,7 +11,8 @@ namespace WeatherWpfApp.Services
 {
     public class WeatherService
     {
-        private const string ApiKey = "ключ api";
+        private const string ApiKey = "0f3e3d9a05caf25bdd1b3ce2646b309f";
+        private const string BaseUrl = "https://api.openweathermap.org/data/2.5";
         private readonly HttpClient _httpClient;
 
         public WeatherService()
@@ -21,17 +22,16 @@ namespace WeatherWpfApp.Services
 
         public async Task<WeatherResponse> GetCurrentWeatherAsync(string cityName)
         {
-            var url = $"https://api.openweathermap.org/data/2.5/weather?q={cityName}&appid={ApiKey}&units=metric&lang=ru";
+            var url = $"{BaseUrl}/weather?q={cityName}&appid={ApiKey}&units=metric&lang=ru";
+            var response = await _httpClient.GetStringAsync(url);
+            return JsonConvert.DeserializeObject<WeatherResponse>(response);
+        }
 
-            var response = await _httpClient.GetAsync(url);
-
-            response.EnsureSuccessStatusCode();
-
-            var content = await response.Content.ReadAsStringAsync();
-
-            var result = JsonConvert.DeserializeObject<WeatherResponse>(content);
-
-            return result;
+        public async Task<ForecastResponse> Get5DayForecastAsync(string cityName)
+        {
+            var url = $"{BaseUrl}/forecast?q={cityName}&appid={ApiKey}&units=metric&lang=ru";
+            var response = await _httpClient.GetStringAsync(url);
+            return JsonConvert.DeserializeObject<ForecastResponse>(response);
         }
     }
 }
