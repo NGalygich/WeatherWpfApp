@@ -14,7 +14,7 @@
     </Window.Resources>
 
     <Window.DataContext>
-        <vm:MainViewModel />
+        <vm:MainViewModel/>
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
@@ -104,6 +104,31 @@
             <TextBlock Text="{Binding Main.Humidity, StringFormat={}Влажность: {0}%}"/>
             <TextBlock Text="{Binding Wind.Speed, StringFormat={}Ветер: {0} м/с}"/>
         </StackPanel>
+
+        <ItemsControl Grid.Row="2" Grid.ColumnSpan="5" ItemsSource="{Binding DailyForecast}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Width="120" Height="150" Margin="10" Background="#FFF0F8FF" 
+                        CornerRadius="10" Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Date}" FontWeight="Bold" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding Weather[0].Description}" TextAlignment="Center" 
+                                   TextWrapping="Wrap" Margin="0,5,0,0"/>
+                            <TextBlock Text="{Binding Main.Temperature, StringFormat={}{0}°C}" 
+                                   FontSize="16" FontWeight="Bold" TextAlignment="Center" Margin="0,5,0,0"/>
+                            <TextBlock Text="{Binding Main.Humidity, StringFormat={}Влажность: {0}%}" 
+                                   FontSize="12" TextAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
         <Border Background="#80000000" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.RowSpan="3" Grid.ColumnSpan="5">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
