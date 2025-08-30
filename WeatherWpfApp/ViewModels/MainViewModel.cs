@@ -73,7 +73,7 @@ namespace WeatherWpfApp.ViewModels
                 var forecast = await forecastTask;
 
                 DailyForecast = forecast.Items
-                    .Where(x => x.DateTimeText.Contains("12:00:00"))
+                    .Where(x => x.DateTimeText.Contains("6:00:00"))
                     .Take(5)
                     .ToList();
             }
