@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Input;
 using WeatherWpfApp.Models;
 using WeatherWpfApp.Services;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WeatherWpfApp.ViewModels
 {
@@ -15,6 +17,12 @@ namespace WeatherWpfApp.ViewModels
         private string _cityName;
         private WeatherResponse _currentWeather;
         private bool _isLoading;
+        private List<ForecastItem> _dailyForecast;
+        public List<ForecastItem> DailyForecast
+        {
+            get => _dailyForecast;
+            set { _dailyForecast = value; OnPropertyChanged(); }
+        }
 
         public MainViewModel()
         {
@@ -56,18 +64,29 @@ namespace WeatherWpfApp.ViewModels
             IsLoading = true;
             try
             {
-                var weather = await _weatherService.GetCurrentWeatherAsync(CityName);
-                CurrentWeather = weather;
+                var weatherTask = _weatherService.GetCurrentWeatherAsync(CityName);
+                var forecastTask = _weatherService.Get5DayForecastAsync(CityName);
+
+                await Task.WhenAll(weatherTask, forecastTask);
+
+                CurrentWeather = await weatherTask;
+                var forecast = await forecastTask;
+
+                DailyForecast = forecast.Items
+                    .Where(x => x.DateTimeText.Contains("12:00:00"))
+                    .Take(5)
+                    .ToList();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при получении погоды: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
                 IsLoading = false;
             }
         }
+        
 
         private async Task LoadUserLocationAsync()
         {
