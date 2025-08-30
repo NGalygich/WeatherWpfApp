@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Windows.Media.Imaging;
 
 namespace WeatherWpfApp.Models
 {
@@ -47,8 +48,10 @@ namespace WeatherWpfApp.Models
         [JsonProperty("icon")]
         public string Icon { get; set; }
 
-        [JsonProperty("icon_url")]
-        public string IconUrl => $"https://openweathermap.org/img/wn/{Icon}@2x.png";
+        public string IconUrl => $"http://openweathermap.org/img/wn/{Icon}@2x.png";
+
+        public string SmallIconUrl => $"http://openweathermap.org/img/wn/{Icon}.png";
+                
     }
 
     public class WindData
